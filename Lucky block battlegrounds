@@ -1,0 +1,134 @@
+local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
+local Window = OrionLib:MakeWindow({Name = "Lucky block battlegrounds", HidePremium = false, SaveConfig = true, ConfigFolder = "OrionTest"})
+
+OrionLib:MakeNotification({
+	Name = "Created by Zakolm",
+	Content = "lucky block battlegrounds",
+	Image = "rbxassetid://4483345998",
+	Time = 5
+})
+local Tab = Window:MakeTab({
+	Name = "Player",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
+})
+
+local Section = Tab:AddSection({
+	Name = "Setting player"
+})
+
+Tab:AddSlider({
+	Name = "Walkspeed",
+	Min = 16,
+	Max = 500,
+	Default = 16,
+	Color = Color3.fromRGB(255, 255, 255),
+	Increment = 1,
+	ValueName = "Sd",
+	Callback = function(Value)
+        local player = game.Players.LocalPlayer
+        player.Character.Humanoid.WalkSpeed = Value
+    end    
+})
+
+Tab:AddSlider({
+	Name = "JumpPower",
+	Min = 50,
+	Max = 200,
+	Default = 50,
+	Color = Color3.fromRGB(255, 255, 255),
+	Increment = 1,
+	ValueName = "Jp",
+	Callback = function(Value)
+        local player = game.Players.LocalPlayer
+        player.Character.Humanoid.JumpPower = Value
+    end    
+})
+
+Tab:AddToggle({
+	Name = "No Gravity",
+	Default = false,
+	Callback = function(Value)
+        if Value then
+            game.Workspace.Gravity = -1
+        else
+            game.Workspace.Gravity = 196.2
+        end        
+    end        
+})
+
+Tab:AddButton({
+	Name = "Reset",
+	Callback = function()
+        local player = game.Players.LocalPlayer
+        player.Character.Humanoid.Health = 0
+    end    
+})
+
+
+Tab:AddButton({
+	Name = "Gamemode",
+	Callback = function()
+		loadstring(game:HttpGet("https://pastebin.com/raw/FwfNEqYz", true))()
+    end    
+})
+
+Tab:AddButton({
+	Name = "Noclip",
+	Callback = function()
+		local Noclip = nil
+		local Clip = nil
+		
+		function noclip()
+			Clip = false
+			local function Nocl()
+				if Clip == false and game.Players.LocalPlayer.Character ~= nil then
+					for _,v in pairs(game.Players.LocalPlayer.Character:GetDescendants()) do
+						if v:IsA('BasePart') and v.CanCollide and v.Name ~= floatName then
+							v.CanCollide = false
+						end
+					end
+				end
+				wait(0.21) 
+			end
+			Noclip = game:GetService('RunService').Stepped:Connect(Nocl)
+		end
+		
+		function clip()
+			if Noclip then Noclip:Disconnect() end
+			Clip = true
+		end
+		
+		noclip() 
+	end    
+})
+local Tab = Window:MakeTab({
+	Name = "Lucky block ",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
+})
+
+local Section = Tab:AddSection({
+	Name = "Give Lucky block"
+})
+local selectluckyblock = nil
+
+local selectluckyblock 
+
+Tab:AddDropdown({
+    Name = "Lucky block",
+    Default = "1", 
+    Options = {"SpawnDiamondBlock", "SpawnGalaxyBlock", "SpawnLuckyBlock", "SpawnRainbowBlock", "SpawnSuperBlock"},
+    Callback = function(Value)
+        selectluckyblock = Value 
+    end    
+})
+
+Tab:AddButton({
+    Name = "Give",
+    Callback = function()
+        if selectluckyblock then 
+            game.ReplicatedStorage:WaitForChild(selectluckyblock):FireServer() 
+        end
+    end    
+})
