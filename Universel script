@@ -2,7 +2,7 @@ local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shl
 local Window = OrionLib:MakeWindow({Name = "Universel Script ", HidePremium = false, SaveConfig = true, ConfigFolder = "OrionTest"})
 
 OrionLib:MakeNotification({
-	Name = "Created by Zakolm",
+	Name = "Created by Ghost",
 	Content = "Universel Script",
 	Image = "rbxassetid://4483345998",
 	Time = 5
@@ -372,6 +372,41 @@ Tab4:AddToggle({
             end
         end)
     end
+})
+local killaura = false
+local player = game.Players.LocalPlayer
+local teleportDuration = 2
+
+Tab4:AddToggle({
+    Name = "Killaura",
+    Default = false,
+    Callback = function(value)
+        killaura = value
+        if killaura then
+            while killaura do
+                wait(1)
+                for _, otherPlayer in pairs(game.Players:GetPlayers()) do
+                    if otherPlayer ~= player and (otherPlayer.Character and player.Character) then
+                        local distance = (player.Character.HumanoidRootPart.Position - otherPlayer.Character.HumanoidRootPart.Position).magnitude
+                        if distance < 20 then 
+                            local originalPosition = player.Character.HumanoidRootPart.Position
+                            for i = 1, 5 do 
+                                wait(0.4) 
+                                player.Character.HumanoidRootPart.Position = otherPlayer.Character.HumanoidRootPart.Position + Vector3.new(math.random(-5, 5), 0, math.random(-5, 5))
+                            end
+                            wait(teleportDuration) 
+                            player.Character.HumanoidRootPart.Position = originalPosition
+                            break 
+                        end
+                    end
+                end
+            end
+        end
+    end    
+})
+
+
+
 
 
 
@@ -392,15 +427,7 @@ Tab5:AddButton({
 	end    
 })
 
-Tab5:AddButton({
-	Name = "Fucking roblox ",
-	Callback = function()
-	while Wait() do
-local block = Instance.new(`part`)
-block.parent = workspace 
-	end
-end    
-})
+
 
 Tab5:AddButton({
 	Name = "Tracer",
@@ -679,36 +706,24 @@ end
 })
 
 Tab6:AddButton({
-    Name = "Teleport Tool",
+    Name = "Teleport Tool(Ctrl-click)",
     Callback = function()
-        local Players = game:GetService("Players")
-        local TweenService = game:GetService("TweenService")  -- Service pour les tweens
-        local existingTool = Players.LocalPlayer.Backpack:FindFirstChild("Teleport Tool")
-        if existingTool then
-            existingTool:Destroy() 
-        end
-        local Tool = Instance.new("Tool")
-        Tool.Name = "Teleport Tool"
-        Tool.RequiresHandle = false 
-        local function onActivated()
-            local player = Players.LocalPlayer
-            local mouse = player:GetMouse()
-            if mouse.Target then
-                local targetPosition = mouse.Hit.p
-                local character = player.Character
-                if character and character:FindFirstChild("HumanoidRootPart") then
-                    local humanoidRootPart = character.HumanoidRootPart
-                    local tweenInfo = TweenInfo.new(1, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
-                    local goal = {Position = targetPosition}
-                    local tween = TweenService:Create(humanoidRootPart, tweenInfo, goal)
-                    tween:Play()
-                    tween.Completed:Wait() 
-                    humanoidRootPart.Position = targetPosition
-                end
-            end
-        end
-        Tool.Activated:Connect(onActivated)		
-        Tool.Parent = Players.LocalPlayer.Backpack
+		local UIS = game:GetService("UserInputService")
+
+		local Player = game.Players.LocalPlayer
+		local Mouse = Player:GetMouse()
+		
+		
+		function GetCharacter()
+		   return game.Players.LocalPlayer.Character
+		end
+		
+		function Teleport(pos)
+		   local Char = GetCharacter()
+		   if Char then
+			   Char:MoveTo(pos)
+		   end
+		end
     end    
 })
 
