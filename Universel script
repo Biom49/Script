@@ -1211,4 +1211,3 @@ local Section = TabInfo:AddSection({
 })
 
 TabInfo:AddParagraph("Info","Prochaine Mise ajour il va avoir dans remotevent un Textbox pour mettre les donner a envoyer et Aussi dotre script ect")
-loadstring(game:HttpGet("https://raw.githubusercontent.com/Biom49/Script/refs/heads/main/Script"))()
