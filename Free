@@ -1,1 +1,9 @@
-print(qgkwzlyvtxmpbhsjufrceadnhoi)
+return function(receivedValue)
+    -- Vérifier si la valeur reçue est TRUE
+    if receivedValue == true then
+        print("Valeur reçue est TRUE dans le script distant.")
+        -- Le reste du code pour charger la version gratuite ou effectuer une action
+    else
+        print("Valeur reçue est FALSE ou non définie dans le script distant.")
+    end
+end
